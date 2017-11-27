@@ -11,7 +11,7 @@ let post = 'Curabitur porttitor aliquet arcu. Nullam.'
 describe('post CRUD', () => {
   it('create post', done => {
     chai.request(app)
-    .post('/posts/add')
+    .post('/posts')
     .send({
       title: title,
       post: post
@@ -44,15 +44,13 @@ describe('post CRUD', () => {
   //update a post
   // it('update post', done => {
   //   chai.request(app)
-  //   .put('/posts/id')
-  //   .send({
   //
   //   })
   // })
   
   it('delete post', done => {
     chai.request(app)
-    .delete('/posts/1')
+    .delete('/posts/5a1bede658cf1751ed2991ef')
     .end((err, res) => {
       expect(err).to.be.null
       expect(res).to.have.status(200)
