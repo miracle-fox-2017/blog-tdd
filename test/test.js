@@ -26,9 +26,11 @@ describe('Blog', function () {
     })
   })
   it('Should save added articles to database', function(done){
+    let dummyUserId = '5a1be0833b216a6383ab3db5'
     let dummyArticles = {
       title: 'Makan Ayam',
       content: 'Makan ayam di pinggir jalan',
+      idUser: dummyUserId,
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -73,14 +75,14 @@ describe('Blog', function () {
 })
 
 describe('User', function(){
-  let dummyUsers = {
-    first_name: 'Alan',
-    last_name: 'Walker',
-    username: 'alan',
-    password: '12345',
-    role: 'user'
-  }
   it('Should add new user in database', function(done){
+    let dummyUsers = {
+      first_name: 'Alan',
+      last_name: 'Walker',
+      username: 'alan',
+      password: '12345',
+      role: 'user'
+    }
     chai.request(server)
     .post('/users')
     .send(dummyUsers)
@@ -129,5 +131,18 @@ describe('User', function(){
       done()
     })
   })
-  it('Should success logged in users')
+  it('Should success logged in users', function(done){
+    let dummyLogin = {
+      username: 'alan',
+      password: '12345'
+    }
+    chai.request(server)
+    .post('/login')
+    .send(dummyLogin)
+    .end(function(err,res){
+      res.should.have.status(200)
+      res.should.have.property('text')
+      done()
+    })
+  })
 })
