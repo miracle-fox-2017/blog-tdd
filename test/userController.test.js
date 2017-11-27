@@ -1,9 +1,6 @@
 var chai = require('chai')
 var chaiHttp = require('chai-http');
 let should = chai.should();
-let authorId = "23423asdas";
-let safeUserId = "5a1bdb20087c1037796abd56";
-const token_blog = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTFiZGNiNDJmNWYyOTNhMjI0MmQ4ODMiLCJ1c2VybmFtZSI6Im5hdGFyIiwicGFzc3dvcmQiOiIkMmEkMTAkVU1GMjhJN1IwLlY5Mm9ZYm1YY1BmTzA5emo2b25ibkNGRmprRnRSSjJ3em91UHZZRE9qZk8iLCJpYXQiOjE1MTE3NzcxODJ9.TgpTg2HmhqrB_x3IAtEr4ZKJmXq6ztOSIKhz3F2NO64";
 
 var createdUserId = '';
 var createdUsername = '';
@@ -14,38 +11,6 @@ let app = require("../app");
 
 chai.use(chaiHttp);
 
-/*
-* Test the Blog users
-*/
-describe('/GET All users', () => {
-	it('it should GET all the users', (done) => {
-		chai.request(app)
-		.get('/api/users')
-		.end((err, res) => {
-			res.should.have.status(200);
-			res.body.should.be.a('array');
-			done();
-		});
-	});
-});
-
-describe('/GET:userId single users', () => {
-	it('it should GET a single user', (done) => {
-		chai.request(app)
-		.get('/api/users/'+safeUserId)
-		.set('token_blog', token_blog)
-		.end((err, res) => {
-			res.should.have.status(200);
-			res.body.should.be.a('object');
-			res.body.should.have.property('_id');
-			res.body.should.have.property('username');
-			res.body.should.have.property('email');
-			res.body.should.have.property('full_name');
-
-			done();
-		});
-	});
-});
 
 /*describe('/POST User', () => {
 	it('it should POST single users and return a new user', (done) => {
@@ -78,10 +43,6 @@ describe('/GET:userId single users', () => {
 });*/
 
 describe('/POST Register user', () => {
-	let cuserid = "";
-	let cusername = "";
-	let cpassword = "";
-
 	it('it should POST single users and return a new user', (done) => {
 
 		let user = {
@@ -108,9 +69,6 @@ describe('/POST Register user', () => {
 			createdUsername = res.body.user.username;
 			createdPassword = "123456";
 
-			console.log(res.body.username);
-			console.log(res.body)
-
 			done();
 		});
 	});
@@ -118,7 +76,6 @@ describe('/POST Register user', () => {
 
 describe('/POST Login user', () => {
 	it('it should POST login user return single user token', (done) => {
-
 
 		chai.request(app)
 		.post('/login')
@@ -141,6 +98,39 @@ describe('/POST Login user', () => {
 	});
 });
 
+/*
+* Test the Blog users
+*/
+describe('/GET All users', () => {
+	it('it should GET all the users', (done) => {
+		chai.request(app)
+		.get('/api/users')
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('array');
+			done();
+		});
+	});
+});
+
+describe('/GET:userId single users', () => {
+	it('it should GET a single user', (done) => {
+		chai.request(app)
+		.get('/api/users/'+createdUserId)
+		.set('token_blog', createdToken)
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			res.body.should.have.property('_id');
+			res.body.should.have.property('username');
+			res.body.should.have.property('email');
+			res.body.should.have.property('full_name');
+
+			done();
+		});
+	});
+});
+
 describe('/PUT:id Edit User', () => {
 	it('it should EDIT single users and return the new user', (done) => {
 		let user = {
@@ -149,8 +139,6 @@ describe('/PUT:id Edit User', () => {
 			full_name: "Registered Edit",
 			email: new Date(),
 		}
-
-		console.log("~~~createdUserId: "+createdUserId)
 
 		chai.request(app)
 		.put('/api/users/'+createdUserId)
