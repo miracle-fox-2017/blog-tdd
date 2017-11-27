@@ -26,9 +26,11 @@ mongoose.connect('mongodb://localhost/blogTDD')
 
 // routes
 const article = require('./routes/article')
+const user = require('./routes/user')
 
 app.get("/", (req, res) => res.json({message: "Welcome to testing Blog API!"}))
 app.use('/api/article', article)
+app.use('/api/user', user)
 
 app.listen(PORT, function(err){
   if(!err){

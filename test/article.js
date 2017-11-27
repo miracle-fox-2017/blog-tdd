@@ -2,7 +2,6 @@
 process.env.NODE_ENV = 'test'
 
 let mongoose = require("mongoose")
-let Article = require('../models/articleModel')
 
 //Require the dev-dependencies
 let chai = require('chai')
@@ -10,6 +9,77 @@ let chaiHttp = require('chai-http')
 let expect = chai.expect
 
 chai.use(chaiHttp)
+
+describe('Users Blog API Integration Tests', function() {
+  // read
+    describe('#GET / Users', function() { 
+      it('should get all user', function(done) { 
+        chai.request('http://localhost:3000') .get('/api/user')
+          .end(function(err, res) { 
+            expect(res.statusCode).to.equal(200); 
+            expect(res.body).to.be.an('array'); 
+            done(); 
+          }); 
+      });
+    });
+    // create
+    describe('## Create user ', function() { 
+      it('should create a user', function(done) { 
+        let newUser = {
+          fullname : 'Argus Tinus',
+          username : 'argus',
+          password : 'argus',
+        }
+        chai.request('http://localhost:3000') 
+        .post('/api/user') 
+        .send(newUser) 
+        .end(function(err, res) { 
+          // console.log(res.body)
+          expect(res.statusCode).to.equal(201); 
+          expect(res.body).to.be.an('object');
+          expect(res.body.data_User).to.have.property('fullname').eql('Argus Tinus');
+          expect(res.body.data_User).to.have.property('username').eql('argus'); 
+          newUser = res.body; 
+          done(); 
+        }); 
+      }); 
+    });
+     // update
+    describe('### Update user', function(){
+      it('should update a user', function(done) { 
+        chai.request('http://localhost:3000') 
+        .put('/api/user/5a1be6dbd756a14dfd3ad15f') 
+        .send({
+          fullname : 'Wi$nu Djhaya Diningrat',
+          username : 'wisnu',
+          password : 'wisnu',
+        }) 
+        .end(function(err, res) { 
+          // console.log('err>>>',err)
+          // console.log('resbody<<<',res.body)
+          expect(res.statusCode).to.equal(201); 
+          expect(res.body).to.be.an('object');
+          expect(res.body.data_User).to.have.property('fullname').eql('Wi$nu Djhaya Diningrat');
+          expect(res.body.data_User).to.have.property('username').eql('wisnu');
+          data_Article = res.body; 
+          done(); 
+        });
+      }); 
+    }) 
+    // delete
+    describe('#### delete user', function(){
+      it('should delete a user', function(done) { 
+        chai.request('http://localhost:3000') 
+        .delete('/api/user/5a1be8c82f202163ba6d9532') 
+        .end(function(err, res) { 
+          // console.log('err>>>',err)
+          // console.log('resbody<<<',res.body)
+          expect(res.statusCode).to.equal(200); 
+          done(); 
+        });
+      }); 
+    })
+})
 
 describe('Blog API Integration Tests', function() {
   // read
@@ -82,5 +152,4 @@ describe('Blog API Integration Tests', function() {
       });
     }); 
   })
-  
 });
