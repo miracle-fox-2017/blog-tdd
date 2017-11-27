@@ -40,11 +40,13 @@ const create = (req, res) => {
 
 const update = (req, res) => {
   let id = ObjectId(req.params.id)
+  let edit = req.body
   // console.log('CEK STATUS',id);
   Article.findById(id)
   .then(dataArticle => {
-    console.log('ISI TASK UNTUK FALSE',dataArticle);
-    dataArticle.status = false
+    dataArticle.title = edit.title,
+    dataArticle.article = edit.article,
+    dataArticle.category = edit.category
     dataArticle.save(function(err) {
       if (err) throw err;
       res.status(200).send(
