@@ -1,0 +1,8 @@
+[
+	{
+		"article" :"Installing the .deb package will automatically install the apt repository and signing key to enable auto-updating using the regular system mechanism."
+	},
+	{
+		"article" :"If you don't want to download and host Bootstrap yourself, you can include it from a CDN (Content Delivery Network)."
+	}
+]
