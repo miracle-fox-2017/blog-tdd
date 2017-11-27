@@ -1,0 +1,27 @@
+{
+  "name": "blog-tdd",
+  "version": "1.0.0",
+  "description": "learn ttd",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhmadNizar/blog-tdd.git"
+  },
+  "author": "Ahmad Nizar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AhmadNizar/blog-tdd/issues"
+  },
+  "homepage": "https://github.com/AhmadNizar/blog-tdd#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.13.5"
+  }
+}
