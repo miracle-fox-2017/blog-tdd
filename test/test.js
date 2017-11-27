@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
 describe('article', function() {
-  it('test untuk memastikan artikel yang disimpan berhasil', function(done) {
+  it('test untuk memastikan artikel berhasil dibuat', function(done) {
     chai.request('http://localhost:3000')
     .post('/articles')
     .send({
@@ -23,19 +23,19 @@ describe('article', function() {
       done()
     })
   })
-  it('test untuk memastikan artikel yang sudah disimpan muncul di daftar artikel', function(done) {
+  it('test untuk memastikan artikel muncul di daftar', function(done) {
     chai.request('http://localhost:3000')
-    .get('/articles/5a1bdb0baa85871b206a67f7')
+    .get('/articles/5a1bed4f75eb4d2290084311')
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1bdb0baa85871b206a67f7')
+      expect(res.body._id).to.equal('5a1bed4f75eb4d2290084311')
       done()
     })
   })
-  it('test untuk memastikan artikel yang diedit berhasil', function(done) {
+  it('test untuk memastikan artikel berhasil diedit', function(done) {
     chai.request('http://localhost:3000')
-    .put('/articles/5a1bdbb97c43201b80c22cc8')
+    .put('/articles/5a1bedb14a6a0a22bd03ede7')
     .send({
       title: 'Wkwkwkwkwkw',
       author: 'kwkwkwkwkW',
@@ -51,18 +51,78 @@ describe('article', function() {
       done()
     })
   })
-  it('test untuk memastikan artikel yang dihapus berhasil', function(done) {
+  it('test untuk memastikan artikel berhasil dihapus ', function(done) {
     chai.request('http://localhost:3000')
-    .get('/articles/5a1bdbb97c43201b80c22cc8')
+    .get('/articles/5a1beddcf310f822da5e641e')
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1bdbb97c43201b80c22cc8')
+      expect(res.body._id).to.equal('5a1beddcf310f822da5e641e')
       done()
     })
   })
+})
 
-  // describe('user', function() {
-    // it('test untuk memastikan bahwa seseorang sudah berhasil login', function(done) {})
-  // })
+describe('user', function() {
+  it('test untuk memastikan user berhasil dibuat', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/users')
+    .send({
+      name: 'Davina Bonadilla',
+      username: 'davina',
+      password: 'bonadilla',
+      email: 'davina.bonadilla@gmail.com'
+    })
+    .end(function(err, res) {
+      // console.log(res)
+      expect(res).to.have.status(200)
+      expect(res.body.name).to.equal('Davina Bonadilla')
+      expect(res.body.username).to.equal('davina')
+      expect(res.body.password).to.equal('bonadilla')
+      expect(res.body.email).to.equal('davina.bonadilla@gmail.com')
+      done()
+    })
+  })
+  it('test untuk memastikan user muncul di daftar', function(done) {
+    chai.request('http://localhost:3000')
+    .get('/users/5a1bed5275eb4d2290084312')
+    .end(function(err, res) {
+      // console.log(res.body)
+      expect(res).to.have.status(200)
+      expect(res.body._id).to.equal('5a1bed5275eb4d2290084312')
+      expect(res.body.name).to.equal('Davina Bonadilla')
+      done()
+    })
+  })
+  it('test untuk memastikan user berhasil diedit', function(done) {
+    chai.request('http://localhost:3000')
+    .put('/users/5a1bedf6a2838b22f3bf2660')
+    .send({
+      name: 'Zuhri Nurhuda',
+      username: 'zuhri',
+      password: 'nurhuda',
+      email: 'zuhri.nurhuda@gmail.com'
+    })
+    .end(function(err, res) {
+      expect(res).to.have.status(200)
+      expect(res.body.name).to.equal('Zuhri Nurhuda')
+      expect(res.body.username).to.equal('zuhri')
+      expect(res.body.password).to.equal('nurhuda')
+      expect(res.body.email).to.equal('zuhri.nurhuda@gmail.com')
+      done()
+    })
+  })
+  it('test untuk memastikan user berhasil dihapus', function(done) {
+    chai.request('http://localhost:3000')
+    .get('/users/5a1bf95b9d900423e20538c3')
+    .end(function(err, res) {
+      // console.log(res.body)
+      expect(res).to.have.status(200)
+      expect(res.body._id).to.equal('5a1bf95b9d900423e20538c3')
+      done()
+    })
+  })
+  it('test untuk memastikan user berhasil login', function(done) {
+    
+  })
 })
