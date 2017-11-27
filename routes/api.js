@@ -2,20 +2,26 @@ const express = require('express')
 const router  = express.Router()
 const blogController = require('../controllers/blog')
 const userController = require('../controllers/user')
+const registerController = require('../controllers/register')
+const verify = require('../helpers/verify')
 
-router.get('/blog', blogController.getAllBlogPosts)
 
-router.post('/blog', blogController.creatBlogPost)
+// TODO: perbaiki mocah chai nya
 
-router.post('/blog/login', (req, res) => {
-  res.send({})
-})
+router.post('/signin', registerController.signin)
 
-router.get('/blog/:_id', blogController.findById)
+router.post('/signup', registerController.signup)
 
-router.put('/blog/:_id', blogController.findByIdAndUpdate)
 
-router.delete('/blog/:_id', blogController.findByIdAndRemove)
+router.get('/blog', verify.isLogin, blogController.getAllBlogPosts)
+
+router.post('/blog', verify.isLogin, blogController.creatBlogPost)
+
+router.get('/blog/:_id', verify.isLogin, blogController.findById)
+
+router.put('/blog/:_id', verify.isLogin, blogController.findByIdAndUpdate)
+
+router.delete('/blog/:_id', verify.isLogin, blogController.findByIdAndRemove)
 
 
 router.get('/users', userController.getAllUsers)
