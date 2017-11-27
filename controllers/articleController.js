@@ -2,13 +2,17 @@ const ObjectId = require('mongodb').ObjectId
 const Article = require('../models/articleModel')
 
 const createArticle = function(req,res){
+  
   let newArticle = Article({
     title : req.body.title,
     category : req.body.category,
     description : req.body.description
   })
-  newArticle.save().then(function(){
-    res.status(201).send(`[+] 1 article created`)
+  newArticle.save().then(function(data_Article){
+    res.status(201).send({
+      message : `[+] 1 article created`,
+      data_Article : data_Article
+    })
   }).catch(function(err){
     res.status(500).send(`[-] err create article`)
   })
@@ -16,13 +20,14 @@ const createArticle = function(req,res){
 
 const findAllArticle = function(req,res){
   Article.find().then(function(data_Article){
-    res.status(201).send(data_Article)
+    res.status(200).send(data_Article)
   }).catch(function(err){
     res.status(500).send(`[-] err find all article`)
   })
 }
 
 const updateArticle = function(req,res){
+  console.log('masuk')
   let id = {
     _id : ObjectId(req.params.id)
   }
@@ -32,8 +37,11 @@ const updateArticle = function(req,res){
     data_Article.category = req.body.category,
     data_Article.description = req.body.description
     // save
-    data_Article.save().then(function(){
-      res.status(201).send('[+] 1 article updated')
+    data_Article.save().then(function(data_Article){
+      res.status(201).send({
+        message : `[+] 1 article created`,
+        data_Article : data_Article
+      })
     }).catch(function(err){
       res.status(500).send(`[-] err update article`)
     })
