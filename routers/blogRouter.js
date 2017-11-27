@@ -19,8 +19,11 @@ router.get('/blog', blogController.getBlogs)
 // | /api/blog/:id  | GET    | token(header),id(params) | Get blog post       |
 router.get('/blog/:id', blogController.getBlog)
 
+// | /api/blog/:id  | PUT    | token(header),id(params) | Edit blog post       |
+router.put('/blog/:id', verifyToken.loginState, blogController.editBlog)
+
 // | /api/blog/:id  | DELETE | token(header),id(params) | Delete blog post    |
-router.delete('/blog/:id', blogController.delBlog)
+router.delete('/blog/:id', verifyToken.loginState, blogController.delBlog)
 
 // | /api/signin    | POST   | username, password       | return token        |
 router.post('/signin', hashPassword.reHashed, blogController.signin)

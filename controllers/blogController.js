@@ -79,6 +79,30 @@ let getBlogs = (req, res) => {
   })
 }
 
+let editBlog = (req, res) => {
+  Blog.update({ _id: req.params.id }, {
+    userId: req.decoded.id,
+    title: req.body.title,
+    article: req.body.article
+  })
+  .then(result=>{
+    Blog.findOne({ _id: req.params.id })
+    .then(newEdit=>{
+      res.status(200).send({
+        msg: "success",
+        newBlogPost: newEdit
+      })
+    })
+    .catch(err=>{
+      res.status(500).send({msg:"unsuccess get blog post"})
+    })
+    
+  })
+  .catch(err=>{
+    res.status(400).send({msg: err})
+  })
+}
+
 let delBlog = (req, res) => {
   Blog.findOne({ _id: req.params.id })
   .then(before=>{
@@ -109,6 +133,7 @@ module.exports = {
   postBlog,
   getBlog,
   getBlogs,
+  editBlog,
   delBlog,
   signin,
   signup,
