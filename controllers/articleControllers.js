@@ -1,7 +1,7 @@
 const Article = require('../models/articleModel')
 
 getOne = (req, res) => {
-  Article.findById(req.query.id)
+  Article.findById(req.params.id)
   .then(response => {
     res.status(200).send(response)
   })
@@ -25,7 +25,7 @@ post = (req, res) => {
 }
 
 update = (req, res) => {
-  Article.findByIdAndUpdate(req.query.id, { $set: req.body}, { new: true })
+  Article.findByIdAndUpdate(req.params.id, { $set: req.body}, { new: true })
   .then(response => {
     res.status(200).send(response)
   })
@@ -35,7 +35,7 @@ update = (req, res) => {
 }
 
 remove = (req, res) => {
-  Article.findByIdAndRemove(req.query.id)
+  Article.findByIdAndRemove(req.params.id)
   .then(response => {
     let status = {
       status: 'deleted',

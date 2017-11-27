@@ -35,8 +35,7 @@ describe('Blog App Test Article', function() {
   }),
   it('Read article', function(done) {
     chai.request(app)
-    .get('/articles')
-    .query({id: tempIdArticle})
+    .get(`/articles/${tempIdArticle}`)
     .end(function(err, res) {
       expect(res).to.have.status(200);
       expect(res.body.title).to.equal(article.title);
@@ -46,8 +45,7 @@ describe('Blog App Test Article', function() {
   }),
   it('Update article', function(done) {
     chai.request(app)
-    .put('/articles')
-    .query({id: tempIdArticle})
+    .put(`/articles/${tempIdArticle}`)
     .send(update)
     .end(function(err, res) {
       expect(res).to.have.status(200);
@@ -58,8 +56,7 @@ describe('Blog App Test Article', function() {
   }),
   it('Delete article', function(done) {
     chai.request(app)
-    .delete('/articles')
-    .query({id: tempIdArticle})
+    .delete(`/articles/${tempIdArticle}`)
     .end(function(err, res) {
       expect(res).to.have.status(200);
       expect(res.body.status).to.equal('deleted')

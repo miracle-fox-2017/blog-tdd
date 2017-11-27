@@ -7,14 +7,14 @@ chai.use(chaiHttp);
 
 // Test Data User
 let user = {
-  username: 'nandi',
+  username: 'testing',
   password: 'qwerty1234',
-  first_name: 'Nandira',
-  last_name: 'Paturohman',
-  email: 'nsp@mail.com',
+  first_name: 'Test',
+  last_name: 'Application',
+  email: 'test@mail.com',
 }
 let update = {
-  email: 'patur@vnx.com',
+  email: 'testing@vnx.com',
 }
 let tempIdUser
 
@@ -34,8 +34,7 @@ describe('Blog App Test User', function() {
   }),
   it('Read user', function(done) {
     chai.request(app)
-    .get('/users')
-    .query({id: tempIdUser})
+    .get(`/users/${tempIdUser}`)
     .end(function(err, res) {
       expect(res).to.have.status(200);
       expect(res.body.title).to.equal(user.title);
@@ -45,20 +44,28 @@ describe('Blog App Test User', function() {
   }),
   it('Update user', function(done) {
     chai.request(app)
-    .put('/users')
-    .query({id: tempIdUser})
+    .put(`/users/${tempIdUser}`)
     .send(update)
     .end(function(err, res) {
       expect(res).to.have.status(200);
-      expect(res.body.title).to.equal(update.title);
+      expect(res.body.email).to.equal(update.email);
       expect(res.body._id).to.equal(tempIdUser);
+      done()
+    })
+  }),
+  it('Login user', function(done) {
+    chai.request(app)
+    .post('/users/login')
+    .send({username: user.username, password: user.password})
+    .end(function(err, res) {
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('token');
       done()
     })
   }),
   it('Delete user', function(done) {
     chai.request(app)
-    .delete('/users')
-    .query({id: tempIdUser})
+    .delete(`/users/${tempIdUser}`)
     .end(function(err, res) {
       expect(res).to.have.status(200);
       expect(res.body.status).to.equal('deleted')

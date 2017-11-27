@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/userModel')
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 getOne = (req, res) => {
-  User.findById(req.query.id)
+  User.findById(req.params.id)
   .then(response => {
     res.status(200).send(response)
   })
@@ -38,11 +40,7 @@ signup = (req, res) => {
       res.status(500).send(err)
       console.log(err);
     })
-      // Store hash in your password DB.
   })
-  // bcrypt.hash(req.body.password, saltRounds)
-  // .then(hash => {
-  // })
   .catch(err => {
     console.log(err);
     res.status(500).send(err)
@@ -50,7 +48,7 @@ signup = (req, res) => {
 }
 
 update = (req, res) => {
-  User.findByIdAndUpdate(req.query.id, { $set: req.body}, { new: true })
+  User.findByIdAndUpdate(req.params.id, { $set: req.body}, { new: true })
   .then(response => {
     res.status(200).send(response)
   })
@@ -60,7 +58,7 @@ update = (req, res) => {
 }
 
 remove = (req, res) => {
-  User.findByIdAndRemove(req.query.id)
+  User.findByIdAndRemove(req.params.id)
   .then(response => {
     let status = {
       status: 'deleted',
@@ -74,9 +72,27 @@ remove = (req, res) => {
 }
 
 login = (req, res) => {
-  User.find({username: req.body.username})
-  .then(response => {
-
+  User.findOne({username: req.body.username})
+  .then(user => {
+    bcrypt.compare(req.body.password, user.password)
+    .then(function(response) {
+      let payload = {
+        id: user._id,
+        username: user.username,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email
+      }
+      jwt.sign(payload, process.env.SECRET_JWT, function(err, token) {
+        let accessToken = {
+          token: token
+        }
+        res.status(200).send(accessToken)
+      });
+    })
+    .catch(err => {
+      res.status(401).send(err);
+    })
   })
   .catch(err => {
     res.status(401).send(err)
@@ -87,6 +103,7 @@ module.exports = {
   getAll,
   getOne,
   signup,
+  login,
   update,
   remove
 }
