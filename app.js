@@ -3,6 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const verify = require('./helpers/verify')
+const mongoose = require('mongoose')
+
 
 
 
@@ -11,51 +13,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
+// mongoose connect
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/blogTdd')
+.then(() =>  console.log('db connection succesful to blog-tdd'))
+.catch((err) => console.error(err));
 
 
-app.get('/blog', function(req, res){
-    res.send({
-      id     : 1,
-      author : 'JK.Rowling',
-      title : 'Harry Potter dan Teman-teman',
-      article : 'Lorem ipsum dolor amet. ad astra per apera. Avacadabra.expecto patronus',
-      createdAt : '17 mei 1992'
-    },{
-      id     : 2,
-      author : 'Adam',
-      title : 'How to console.log withhout console.log',
-      article : 'Lorem ipsum dolor amet. ad astra per apera. Avacadabra.expecto patronus',
-      createdAt : '20 aug 2012'
-    },{
-      id     : 3,
-      author : 'Jhon Doe',
-      title : 'Javascript vs Java Island',
-      article : 'Lorem ipsum dolor amet. ad astra per apera. Avacadabra.expecto patronus',
-      createdAt : '17 mei 2017'
-    },{
-      id     : 4,
-      author : 'Foo Bar',
-      title : 'Biography of Steve jobes',
-      article : 'Lorem ipsum dolor amet. ad astra per apera. Avacadabra.expecto patronus',
-      createdAt : '17 dec 2006'
-    },{
-      id     : 5,
-      author : 'Dummy',
-      title : 'create data dummmy',
-      article : 'Lorem ipsum dolor amet. ad astra per apera. Avacadabra.expecto patronus',
-      createdAt : '18 april 2017'
-    });
-});
 
+const api = require('./routes/api')
+app.use('/api', api)
 
-app.post('/blog', function(req, res) {
-  res.send({
-    author: req.body.author,
-    title : req.body.title,
-    article : req.body.article,
-    createdAt : req.body.createdAt
-  })
-})
 
 app.delete('/blog/:id', function(req, res) {
   res.send({})
