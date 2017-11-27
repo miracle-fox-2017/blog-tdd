@@ -1,11 +1,6 @@
 const chai = require('chai')
 const expect = chai.expect
-
 const chaiHttp = require('chai-http')
-const assert = require('assert')
-
-const ObjectId = require('mongodb').ObjectId
-
 chai.use(chaiHttp)
 
 describe('article', function() {
@@ -19,7 +14,7 @@ describe('article', function() {
       category: 'Dummy'
     })
     .end(function(err, res) {
-      // console.log(res.body)
+      // console.log(res)
       expect(res).to.have.status(200)
       expect(res.body.title).to.equal('Hello Word!')
       expect(res.body.author).to.equal('John Doe')
@@ -30,26 +25,44 @@ describe('article', function() {
   })
   it('test untuk memastikan artikel yang sudah disimpan muncul di daftar artikel', function(done) {
     chai.request('http://localhost:3000')
-    .get('/articles/5a1bbccaf8b6f30eeaf4faa3')
+    .get('/articles/5a1bdb0baa85871b206a67f7')
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1bbccaf8b6f30eeaf4faa3')
+      expect(res.body._id).to.equal('5a1bdb0baa85871b206a67f7')
+      done()
+    })
+  })
+  it('test untuk memastikan artikel yang diedit berhasil', function(done) {
+    chai.request('http://localhost:3000')
+    .put('/articles/5a1bdbb97c43201b80c22cc8')
+    .send({
+      title: 'Wkwkwkwkwkw',
+      author: 'kwkwkwkwkW',
+      content: 'Wkwkwkwkw wkwkwkwk wkwkwkwkw wkwkwkwkw wkwkwkw.',
+      category: 'Wkwkwkw'
+    })
+    .end(function(err, res) {
+      expect(res).to.have.status(200)
+      expect(res.body.title).to.equal('Wkwkwkwkwkw')
+      expect(res.body.author).to.equal('kwkwkwkwkW')
+      expect(res.body.content).to.equal('Wkwkwkwkw wkwkwkwk wkwkwkwkw wkwkwkwkw wkwkwkw.')
+      expect(res.body.category).to.equal('Wkwkwkw')
       done()
     })
   })
   it('test untuk memastikan artikel yang dihapus berhasil', function(done) {
     chai.request('http://localhost:3000')
-    .get('/articles/5a1bbccaf8b6f30eeaf4faa3')
+    .get('/articles/5a1bdbb97c43201b80c22cc8')
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1bbccaf8b6f30eeaf4faa3')
+      expect(res.body._id).to.equal('5a1bdbb97c43201b80c22cc8')
       done()
     })
   })
 
-  describe('user', function() {
+  // describe('user', function() {
     // it('test untuk memastikan bahwa seseorang sudah berhasil login', function(done) {})
-  })
+  // })
 })
