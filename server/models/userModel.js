@@ -3,6 +3,13 @@ const mongoose = require('mongoose').connect(process.env.DB_PATH)
 
 
 const userSchema = mongoose.Schema ({
-  username: String,
+  username: {
+    type: String,
+    unique: true
+  },
   password: String
 })
+
+const userModel = mongoose.model('User', userSchema)
+
+module.exports = userModel;

@@ -22,6 +22,7 @@ describe('post CRUD', () => {
       expect(res.body).to.have.property('title', title)
       expect(res.body).to.have.property('post', post)
     })
+    done()
   })
   
   it('read post', done => {
@@ -37,6 +38,7 @@ describe('post CRUD', () => {
         'post': post
       }])
     })
+    done()
   })
   
   //update a post
@@ -57,6 +59,7 @@ describe('post CRUD', () => {
       expect(req.body).to.have.property('title', title)
       expect(req.body).to.have.property('post', post)
     })
+    done()
   })
   
   

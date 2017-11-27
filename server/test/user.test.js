@@ -57,5 +57,6 @@ describe('login', () => {
       expect(res).to.have.status(200)
       expect(res.body).to.have.property('uid')
     })
+    done()
   })
 })
