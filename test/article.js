@@ -10,6 +10,29 @@ let expect = chai.expect
 
 chai.use(chaiHttp)
 
+describe('Login Users Blog API Integration Tests', function() {
+  //login user
+  describe('## Login user ', function() { 
+    it('should login user', function(done) { 
+      let user = {
+        username : 'wisnudj',
+        password : 'wisnudj'
+      }
+      chai.request('http://localhost:3000') 
+      .post('/api/user/login') 
+      .send(user) 
+      .end(function(err, res) { 
+        // console.log('>>>',res.body)
+        expect(res.statusCode).to.equal(201); 
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('success').eql(true);
+        expect(res.body).to.have.property('message').eql('Enjoy your token!');
+        done(); 
+      }); 
+    }); 
+  });
+})
+
 describe('Users Blog API Integration Tests', function() {
   // read
     describe('#GET / Users', function() { 
