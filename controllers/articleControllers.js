@@ -10,6 +10,16 @@ getOne = (req, res) => {
   })
 }
 
+getAll = (req, res) => {
+  Article.find()
+  .then(response => {
+    res.status(200).send(response)
+  })
+  .catch(err => {
+    res.status(500).send(err)
+  })
+}
+
 post = (req, res) => {
   Article.create(req.body)
   .then(response => {
@@ -50,6 +60,7 @@ remove = (req, res) => {
 
 module.exports = {
   getOne,
+  getAll,
   post,
   update,
   remove
