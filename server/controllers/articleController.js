@@ -1,5 +1,5 @@
 // const mongoose = require('mongoose').connect('mongodb://vbagustinus:anakjalanan@smartshop-shard-00-00-hibsb.mongodb.net:27017,smartshop-shard-00-01-hibsb.mongodb.net:27017,smartshop-shard-00-02-hibsb.mongodb.net:27017/article?ssl=true&replicaSet=smartshop-shard-0&authSource=admin');
-const mongoose = require('mongoose').connect('mongodb://localhost/article');
+const mongoose = require('mongoose').connect('mongodb://localhost/testing-article');
 const Article = require('../models/articleModel')
 const ObjectId = require('mongodb').ObjectId
 

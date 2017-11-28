@@ -18,7 +18,7 @@ app.use('/login', login);
 app.use('/', index);
 app.use('/register', users);
 
-app.listen(3000,(err)=>{
+app.listen( process.env.PORT || '3000',(err)=>{
   if(!err){
     console.log('Jalan di port 3000');
   } else {
