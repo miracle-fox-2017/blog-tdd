@@ -1,9 +1,11 @@
 const chai = require('chai')
 const expect = chai.expect
 const chaiHttp = require('chai-http')
+const app = require('../app')
 chai.use(chaiHttp)
 
 describe('article', function() {
+  let id = ''
   it('test untuk memastikan artikel berhasil dibuat', function(done) {
     chai.request('http://localhost:3000')
     .post('/articles')
@@ -14,7 +16,8 @@ describe('article', function() {
       category: 'Dummy'
     })
     .end(function(err, res) {
-      // console.log(res)
+      // console.log(res.body)
+      id = res.body._id
       expect(res).to.have.status(200)
       expect(res.body.title).to.equal('Hello Word!')
       expect(res.body.author).to.equal('John Doe')
@@ -24,18 +27,23 @@ describe('article', function() {
     })
   })
   it('test untuk memastikan artikel muncul di daftar', function(done) {
+    // console.log(id);
     chai.request('http://localhost:3000')
-    .get('/articles/5a1bed4f75eb4d2290084311')
+    .get(`/articles/${id}`)
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1bed4f75eb4d2290084311')
+      expect(res.body._id).to.equal(id)
+      expect(res.body.title).to.equal('Hello Word!')
+      expect(res.body.author).to.equal('John Doe')
+      expect(res.body.content).to.equal('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas scelerisque quis augue eu faucibus. Fusce laoreet ligula id consectetur iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi auctor dolor sit amet lorem egestas, congue auctor urna finibus. Integer ut fermentum tellus. Praesent aliquam, eros ac tincidunt placerat, massa orci laoreet lectus, ac ullamcorper dolor leo eget est. Nam a vulputate nunc.')
+      expect(res.body.category).to.equal('Dummy')
       done()
     })
   })
   it('test untuk memastikan artikel berhasil diedit', function(done) {
     chai.request('http://localhost:3000')
-    .put('/articles/5a1bedb14a6a0a22bd03ede7')
+    .put(`/articles/${id}`)
     .send({
       title: 'Wkwkwkwkwkw',
       author: 'kwkwkwkwkW',
@@ -44,6 +52,7 @@ describe('article', function() {
     })
     .end(function(err, res) {
       expect(res).to.have.status(200)
+      expect(res.body._id).to.equal(id)
       expect(res.body.title).to.equal('Wkwkwkwkwkw')
       expect(res.body.author).to.equal('kwkwkwkwkW')
       expect(res.body.content).to.equal('Wkwkwkwkw wkwkwkwk wkwkwkwkw wkwkwkwkw wkwkwkw.')
@@ -53,17 +62,18 @@ describe('article', function() {
   })
   it('test untuk memastikan artikel berhasil dihapus ', function(done) {
     chai.request('http://localhost:3000')
-    .get('/articles/5a1beddcf310f822da5e641e')
+    .get(`/articles/${id}`)
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1beddcf310f822da5e641e')
+      expect(res.body._id).to.equal(id)
       done()
     })
   })
 })
 
 describe('user', function() {
+  let id = ''
   it('test untuk memastikan user berhasil dibuat', function(done) {
     chai.request('http://localhost:3000')
     .post('/users')
@@ -75,6 +85,7 @@ describe('user', function() {
     })
     .end(function(err, res) {
       // console.log(res.body)
+      id = res.body._id
       expect(res).to.have.status(200)
       expect(res.body.name).to.equal('Davina Bonadilla')
       expect(res.body.username).to.equal('davina')
@@ -84,18 +95,20 @@ describe('user', function() {
   })
   it('test untuk memastikan user muncul di daftar', function(done) {
     chai.request('http://localhost:3000')
-    .get('/users/5a1c174820cfa32d546021d5')
+    .get(`/users/${id}`)
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1c174820cfa32d546021d5')
-      expect(res.body.name).to.equal('Zuhri Nurhuda')
+      expect(res.body._id).to.equal(id)
+      expect(res.body.name).to.equal('Davina Bonadilla')
+      expect(res.body.username).to.equal('davina')
+      expect(res.body.email).to.equal('davina.bonadilla@gmail.com')
       done()
     })
   })
   it('test untuk memastikan user berhasil diedit', function(done) {
     chai.request('http://localhost:3000')
-    .put('/users/5a1c177d3761532d7ee9d034')
+    .put(`/users/${id}`)
     .send({
       name: 'Zuhri Nurhuda',
       username: 'zuhri',
@@ -103,6 +116,7 @@ describe('user', function() {
       email: 'zuhri.nurhuda@gmail.com'
     })
     .end(function(err, res) {
+      // console.log(res.body);
       expect(res).to.have.status(200)
       expect(res.body.name).to.equal('Zuhri Nurhuda')
       expect(res.body.username).to.equal('zuhri')
@@ -112,25 +126,26 @@ describe('user', function() {
   })
   it('test untuk memastikan user berhasil dihapus', function(done) {
     chai.request('http://localhost:3000')
-    .get('/users/5a1c17a44c3c312da0ff320a')
+    .get(`/users/${id}`)
     .end(function(err, res) {
       // console.log(res.body)
       expect(res).to.have.status(200)
-      expect(res.body._id).to.equal('5a1c17a44c3c312da0ff320a')
+      expect(res.body._id).to.equal(id)
       done()
     })
   })
   it('test untuk memastikan user berhasil login', function(done) {
     chai.request('http://localhost:3000')
-    .post('/users')
+    .post('/users/login')
     .send({
       username: 'zuhri',
       password: 'nurhuda',
     })
     .end(function(err, res) {
-      console.log(res)
+      console.log(res.body.token)
       expect(res).to.have.status(200)
       // expect(res.body.username).to.equal('zuhri')
+      expect(res.body.token).to.not.be.an('undefined');
       done()
     })
   })

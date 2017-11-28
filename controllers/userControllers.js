@@ -72,7 +72,7 @@ const login = (req, res) => {
         jwt(user)
         .then(token => {
           console.log(token);
-          res.send(token)
+          res.send({token: token})
         })
         .catch(err => res.status(500).send(err))
       } else {
