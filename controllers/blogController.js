@@ -48,7 +48,6 @@ const update = (req, res) => {
 	ArticleModel.findOne({
 		_id: ObjectId(req.params.articleId)
 	}).then(article => {
-		console.log(article);
 
 		if (article) {
 			article.title = req.body.title || article.title;

@@ -11,37 +11,6 @@ let app = require("../app");
 
 chai.use(chaiHttp);
 
-
-/*describe('/POST User', () => {
-	it('it should POST single users and return a new user', (done) => {
-
-		let user = {
-			username: "kenji22",
-			email: "kenji22@mail.com",
-			password: "123456",
-			full_name: "Kenji Twain",
-		}
-
-		chai.request(app)
-		.post('/api/users')
-		.send(user)
-		.end((err, res) => {
-			res.should.have.status(200);
-			res.body.should.be.a('object');
-			res.body.should.have.property('message');
-			res.body.should.have.property('user');
-			res.body.user.should.have.property('username');
-			res.body.user.should.have.property('email');
-			res.body.user.should.have.property('full_name');
-			res.body.user.should.have.property('_id');
-
-			createdUserId = res.body.user._id;
-
-			done();
-		});
-	});
-});*/
-
 describe('/POST Register user', () => {
 	it('it should POST single users and return a new user', (done) => {
 
@@ -153,6 +122,126 @@ describe('/PUT:id Edit User', () => {
 			res.body.user.should.have.property('email');
 			res.body.user.should.have.property('full_name');
 			res.body.user.should.have.property('_id');
+
+			done();
+		});
+	});
+});
+
+/*
+* Test the Blog articles
+*/
+
+describe('/POST blog article', () => {
+	it('it should POST single articles and return a new article', (done) => {
+
+		let article = {
+			title: "Welcome to the Jungle",
+			content: "I'm the king of the jungle",
+			category: "News",
+			createdAt: new Date(),
+			author: "Mark Twain"
+		}
+
+		chai.request(app)
+		.post('/api/articles')
+		.send(article)
+		.set('token_blog', createdToken)
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			res.body.should.have.property('message');
+			res.body.should.have.property('article');
+			res.body.article.should.have.property('title');
+			res.body.article.should.have.property('content');
+			res.body.article.should.have.property('category');
+			res.body.article.should.have.property('author');
+
+			articleId = res.body.article._id;
+
+			done();
+		});
+	});
+});
+
+describe('/GET blog articles', () => {
+	it('it should GET all the articles', (done) => {
+		chai.request(app)
+		.get('/api/articles/')
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('array');
+			done();
+		});
+	});
+});
+
+describe('/GET:articleId blog articles', () => {
+	it('it should GET a single article', (done) => {
+		chai.request(app)
+		.get('/api/articles/'+articleId)
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			res.body.should.have.property('_id');
+			res.body.should.have.property('title');
+			res.body.should.have.property('content');
+			res.body.should.have.property('category');
+			res.body.should.have.property('author');
+
+			done();
+		});
+	});
+});
+
+describe('/PUT:id blog article', () => {
+	it('it should EDIT single articles and return the new article', (done) => {
+		let article = {
+			title: "Welcome to the Desert",
+			content: "I'm the king of the Desert",
+			category: "News",
+			createdAt: new Date(),
+			author: "Sambo"
+		}
+
+		chai.request(app)
+		.put('/api/articles/'+articleId)
+		.send(article)
+		.set('token_blog', createdToken)
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			res.body.should.have.property('message');
+			res.body.should.have.property('article');
+			res.body.article.should.have.property('_id');
+			res.body.article.should.have.property('title');
+			res.body.article.should.have.property('content');
+			res.body.article.should.have.property('category');
+			res.body.article.should.have.property('author');
+
+			done();
+		});
+	});
+});
+
+/* Delete User and Article */
+
+describe('/DELETE:id blog article', () => {
+	it('it should DELETE single articles and return the deleted article', (done) => {
+
+		chai.request(app)
+		.delete('/api/articles/'+articleId)
+		.set('token_blog', createdToken)
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			res.body.should.have.property('message');
+			res.body.should.have.property('article');
+			res.body.article.should.have.property('_id');
+			res.body.article.should.have.property('title');
+			res.body.article.should.have.property('content');
+			res.body.article.should.have.property('category');
+			res.body.article.should.have.property('author');
 
 			done();
 		});

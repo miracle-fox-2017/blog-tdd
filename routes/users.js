@@ -8,7 +8,7 @@ router.get('/', userController.findAll);
 
 router.get('/:userId', middleware.isLogin, userController.findById);
 
-router.post('/', userController.create);
+// router.post('/', userController.create);
 
 router.put('/:userId', middleware.isLogin, userController.update);
 
