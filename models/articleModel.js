@@ -5,7 +5,10 @@ var articleSchema = mongoose.Schema({
   content: String,
   author: String,
   category: String,
-  createdAt: Date
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 var articleModel = mongoose.model('Article', articleSchema);
